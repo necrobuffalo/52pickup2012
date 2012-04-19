@@ -1,0 +1,22 @@
+/*
+    robot_main.ic
+    Emma Barber
+    Created: 4/19/2012
+    Robot driver file.
+*/
+
+/* PROVIDED LIBRARIES */
+#use servo/exp_servo_lib.ic
+#use gps/gps_module.icb
+#use gps/gps_module.ic
+#use encoders/sencdr0.icb
+#use encoders/sencdr1.icb
+
+/* USER LIBRARIES */
+#use defines.ic
+#use drive_straight.ic
+
+int main() {
+    //Drive up ramp.
+    drive_straight(2000000,FULL_FORWARD,.3);
+}

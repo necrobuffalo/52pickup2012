@@ -1,0 +1,41 @@
+/*
+    drive_straight.ic
+    Emma Barber
+    Created: 4/19/2012
+    Drives robot for distance (ft, in ticks temporarily) at speed
+    with delay seconds in between encoder checks.
+*/
+
+int drive_straight(int distance, int speed, float delay) {
+    //Initialize variables
+    int current_ticks = 0, avg_ticks;
+    int max_ticks = distance; //Will be converted later based on 10 ft encoder data.
+    
+    //Reset left and right encoders.
+    encoder0_counts = 0;
+    encoder1_counts = 0;
+    
+    //Set motors to desired speed.
+    motor(LEFT_MOTOR, speed);
+    motor(RIGHT_MOTOR, speed);
+    
+    while (current_ticks < max_ticks) {
+        //Reset left and right encoders.
+        encoder0_counts = 0;
+        encoder1_counts = 0;
+        
+        //Wait for motors to move.
+        sleep(delay);
+        
+        //Calculate how many ticks we've moved since the last check.
+        avg_ticks = (encoder0_counts + encoder1_counts) / 2;
+        //Add result to ticks so far.
+        current_ticks += avg_ticks;
+    }
+    
+    //Turn motors off
+    motor(LEFT_MOTOR, 0);
+    motor(RIGHT_MOTOR, 0);
+    
+    return 0; //Nothing broke
+}

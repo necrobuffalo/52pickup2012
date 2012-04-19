@@ -1,0 +1,18 @@
+/*
+    defines.ic
+    Emma Barber
+    Created: 4/19/2012
+    Useful robot values.
+*/
+
+/* MOTORS */
+#define FULL_REVERSE -100
+#define HALF_REVERSE -50
+#define MOTOR_OFF 0
+#define HALF_FORWARD 50
+#define FULL_FORWARD 100
+
+#define LEFT_MOTOR 0
+#define RIGHT_MOTOR 1
+
+/* GPS LOCATIONS */
