@@ -1,0 +1,48 @@
+/*
+    turn.ic
+    Emma Barber
+    Created: 4/26/2012
+    Turns robot by angle at speed, with delay seconds between encoder
+    checks.
+*/
+
+int turn(int angle, int speed, float delay) {
+    //Initialize variables
+    int current_ticks = 0, avg_ticks;
+    int max_ticks = angle; //Will be converted later based on 10 ft encoder data.
+    
+    //Reset left and right encoders.
+    LEFT_ENCODER = 0;
+    RIGHT_ENCODER = 0;
+    
+    //Set motors to desired speed.
+    if (angle > 0) {
+        motor(LEFT_MOTOR, speed);
+        motor(RIGHT_MOTOR, -1 * speed);
+    }
+    else if (angle < 0) {
+        motor(LEFT_MOTOR, -1 * speed);
+        motor(RIGHT_MOTOR, speed);
+    }
+    
+    while (current_ticks < max_ticks) {
+        //Reset left and right encoders.
+        encoder0_counts = 0;
+        encoder1_counts = 0;
+        
+        //Wait for motors to move.
+        sleep(delay);
+        
+        //Calculate how many ticks we've moved since the last check.
+        avg_ticks = (encoder0_counts + encoder1_counts) / 2;
+        //Add result to ticks so far.
+        current_ticks += avg_ticks;
+        printf("Current ticks: %d", current_ticks);
+    }
+    
+    //Turn motors off
+    motor(LEFT_MOTOR, 0);
+    motor(RIGHT_MOTOR, 0);
+    
+    return 0; //Nothing broke
+}

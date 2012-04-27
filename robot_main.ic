@@ -3,6 +3,7 @@
     Emma Barber
     Created: 4/19/2012
     Robot driver file.
+    Modified: 4/26/2012 - reaching targets for performance test three
 */
 
 /* PROVIDED LIBRARIES */
@@ -15,8 +16,23 @@
 /* USER LIBRARIES */
 #use defines.ic
 #use drive_straight.ic
+#use turn.ic
 
 int main() {
-    //Drive up ramp.
-    drive_straight(2000000,FULL_FORWARD,.3);
+    turn(20, 100, STD_DELAY);
+    /*
+    //Wait for CdS cell
+    while (analog(CDS_CELL) < 40) {}
+    
+    //Drive up ramp
+    drive_straight(2500, FULL_FORWARD, STD_DELAY);
+    
+    //Touch crank
+    turn();
+    drive_straight(2500, FULL_FORWARD, STD_DELAY);
+    
+    //Press subway button
+    turn();
+    drive_straight(2500, FULL_FORWARD, STD_DELAY);
+*/
 }
