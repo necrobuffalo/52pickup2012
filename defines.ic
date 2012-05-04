@@ -15,14 +15,19 @@
 
 #define LEFT_MOTOR       0                  //Port for left motor
 #define RIGHT_MOTOR      2                  //Port for right motor
+#define CRANK            3
 
 /* SENSORS */
-#define CDS_CELL         3                  //Port for CdS cell
-#define LEFT_ENCODER     encoder0_counts    //Left motor encoder value
-#define RIGHT_ENCODER    encoder1_counts    //Right motor encoder value
+#define CDS_CELL         4                  //Port for CdS cell
+#define LEFT_ENCODER     encoder2_counts    //Left motor encoder value
+#define RIGHT_ENCODER    encoder6_counts    //Right motor encoder value
+
+#define LEFT_OPTO        16
+#define CENTER_OPTO      18
+#define RIGHT_OPTO       20
 
 /* GPS LOCATIONS */
 
 /* MISC */
-#define STD_DELAY        .3                 //Standard delay between encoder checks
+#define STD_DELAY        .1                 //Standard delay between encoder checks
 

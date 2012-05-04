@@ -1,0 +1,25 @@
+/*
+    gps_defines.ic
+    Emma Barber
+    Created: 5/3/2012
+    Useful GPS values.
+*/
+
+/* GPS QUADRANTS */
+#define GPS_OUTSKIRTS      0
+#define GPS_STOPLIGHT      1
+#define GPS_CRANK          2
+#define GPS_SUBWAY         3
+
+#define OUTSKIRTS_X_MIN    0
+#define OUTSKIRTS_X_MAX    0
+#define STOPLIGHT_X_MIN    0
+#define STOPLIGHT_X_MAX    0
+#define CRANK_X_MIN        0
+#define CRANK_X_MAX        0
+#define SUBWAY_X_MIN       0
+#define SUBWAY_X_MAX       0
+#define OUTSKIRTS_Y_MIN    0
+#define OUTSKIRTS_Y_MAX    0
+#define DOWNTOWN_Y_MIN     0
+#define DOWNTOWN_Y_MAX     0

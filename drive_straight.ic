@@ -13,6 +13,13 @@ int drive_straight(int distance, int speed, float delay) {
     int max_ticks = distance; //Will be converted later based on 10 ft encoder data.
     int right_speed = speed, left_speed = speed;
     
+    if (speed > 0) {
+        right_speed = speed - 15;
+    }
+    else if (speed < 0) {
+        right_speed = speed + 15;
+    }
+    
     //Set motors to desired speed.
     motor(LEFT_MOTOR, speed);
     motor(RIGHT_MOTOR, speed);
@@ -53,9 +60,15 @@ int drive_straight(int distance, int speed, float delay) {
         
         //Calculate how many ticks we've moved since the last check.
         avg_ticks = (LEFT_ENCODER + RIGHT_ENCODER) / 2;
-        //Add result to ticks so far.
-        printf("\nCurrent ticks: %d", current_ticks);
         current_ticks += avg_ticks;
+        
+        /*
+        if (digital(7)) {
+            motor(RIGHT_MOTOR, 50);
+            motor(LEFT_MOTOR, -50);
+            sleep(.1);
+        }
+*/
     }
     
     //Turn motors off

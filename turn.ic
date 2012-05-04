@@ -21,23 +21,24 @@ int turn(int angle, int speed, float delay) {
         motor(RIGHT_MOTOR, -1 * speed);
     }
     else if (angle < 0) {
+        max_ticks *= -1;
         motor(LEFT_MOTOR, -1 * speed);
         motor(RIGHT_MOTOR, speed);
     }
     
     while (current_ticks < max_ticks) {
         //Reset left and right encoders.
-        encoder0_counts = 0;
-        encoder1_counts = 0;
+        LEFT_ENCODER = 0;
+        RIGHT_ENCODER = 0;
         
         //Wait for motors to move.
         sleep(delay);
         
         //Calculate how many ticks we've moved since the last check.
-        avg_ticks = (encoder0_counts + encoder1_counts) / 2;
+        avg_ticks = (LEFT_ENCODER + RIGHT_ENCODER) / 2;
         //Add result to ticks so far.
         current_ticks += avg_ticks;
-        printf("Current ticks: %d", current_ticks);
+        printf("\nCurrent ticks: %d", current_ticks);
     }
     
     //Turn motors off

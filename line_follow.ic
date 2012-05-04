@@ -1,0 +1,76 @@
+#define L_ON (analog(16) > 40)
+#define C_ON (analog(18) > 40)
+#define R_ON (analog(20) > 40)
+
+#define FOLLOW_SPEED 25
+#define TURN_SPEED 25
+
+void soft_right(int speed) {
+    motor(LEFT_MOTOR, speed);
+    motor(RIGHT_MOTOR, 0);
+}
+void soft_left(int speed) {
+    motor(LEFT_MOTOR, 0);
+    motor(RIGHT_MOTOR, speed);
+}
+void straight(int speed) {
+    motor(LEFT_MOTOR, speed);
+    motor(RIGHT_MOTOR, speed);
+}
+void stop() {
+    motor(LEFT_MOTOR, 0);
+    motor(RIGHT_MOTOR, 0);
+}
+
+void line_follow(long time, int follow_speed, int turn_speed) {
+    int lost_line = 0;
+    int last_state = 0;
+    long c_time = (long) 0;
+    
+    while (c_time < time) {
+        if (!L_ON && !C_ON && !R_ON) {
+            //lost_line = 1;
+            if (last_state > 0) {
+                soft_right(turn_speed);
+            }
+            else if (last_state < 0) {
+                soft_left(turn_speed);
+            }
+            else {
+                stop();
+            }
+        }
+        else if (!L_ON && !C_ON && R_ON) {
+            soft_right(turn_speed);
+            last_state = 1;
+        }
+        else if (!L_ON && C_ON && !R_ON) {
+            straight(follow_speed);
+            last_state = 0;
+        }
+        else if (!L_ON && C_ON && R_ON) {
+            soft_right(turn_speed);
+            last_state = 1;
+        }
+        else if (L_ON && !C_ON && !R_ON) {
+            soft_left(turn_speed);
+            last_state = -1;
+        }
+        else if (L_ON && !C_ON && R_ON) {
+            straight(follow_speed);
+            last_state = 0;
+        }
+        else if (L_ON && C_ON && !R_ON) {
+            soft_left(turn_speed);
+            last_state = -1;
+        }
+        else if (L_ON && C_ON && R_ON) {
+            straight(follow_speed);
+            last_state = 0;
+        }
+        c_time += mseconds();
+    }
+    
+    motor(LEFT_MOTOR, 0);
+    motor(RIGHT_MOTOR, 0);
+}

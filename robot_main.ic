@@ -10,29 +10,60 @@
 #use servo/exp_servo_lib.ic
 #use gps/gps_module.icb
 #use gps/gps_module.ic
-#use encoders/sencdr0.icb
-#use encoders/sencdr1.icb
+#use encoders/fencdr2.icb
+#use encoders/fencdr6.icb
 
 /* USER LIBRARIES */
 #use defines.ic
+#use gps_defines.ic
 #use drive_straight.ic
 #use turn.ic
+#use line_follow.ic
 
 int main() {
-    turn(20, 100, STD_DELAY);
+    //init
+    exp_servo_enable();
+    gps_initialize_knob();
+    gps_enable();
+    
     /*
+    while(!stop_button()) {
+        if (gps_get_data()) {
+            printf("\nX: %d Y: %d H: %d", gps_x, gps_y, gps_heading);
+        }
+    }
+*/    
+
+    
+    
     //Wait for CdS cell
-    while (analog(CDS_CELL) < 40) {}
+    while (analog(CDS_CELL) > 20 && !start_button()) {}
+    printf("Light went on.");
     
-    //Drive up ramp
-    drive_straight(2500, FULL_FORWARD, STD_DELAY);
+    //up ramp to light
+    drive_straight(150,100,STD_DELAY);
+    //back up a bit
+    drive_straight(40,-100,STD_DELAY);
+    //rotate towards crank
+    turn(23,-100,STD_DELAY);
+    //move to line
+    drive_straight(80,-100,STD_DELAY);
+    //line follow
+    line_follow((long) 10000, -75, -75);
+    //turn crank for x seconds
+    motor(CRANK, 60);
+    sleep(3.0);
+    motor(CRANK, 0);
+    //back up
+    drive_straight(50,100, STD_DELAY);
+    //go home
+    turn(22,-100,STD_DELAY);
+    drive_straight(100,100, STD_DELAY);
+
+
     
-    //Touch crank
-    turn();
-    drive_straight(2500, FULL_FORWARD, STD_DELAY);
+    //shutdown
+    gps_disable();
+    exp_servo_disable();
     
-    //Press subway button
-    turn();
-    drive_straight(2500, FULL_FORWARD, STD_DELAY);
-*/
 }
