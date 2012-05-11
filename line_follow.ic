@@ -2,8 +2,8 @@
 #define C_ON (analog(18) > 40)
 #define R_ON (analog(20) > 40)
 
-#define FOLLOW_SPEED 25
-#define TURN_SPEED 25
+#define FOLLOW_SPEED 40
+#define TURN_SPEED 50
 
 void soft_right(int speed) {
     motor(LEFT_MOTOR, speed);

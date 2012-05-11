@@ -1,0 +1,38 @@
+#define CDS_CELL 4
+
+#define OFF 0
+#define BLUE 1
+#define RED 2
+
+int main() {
+    int color;
+    
+    while (!stop_button()) {
+        if (analog(CDS_CELL) > 20) {
+            //off
+            color = OFF;
+        }
+        else if (analog(CDS_CELL) > 7) {
+            //blue
+            color = BLUE;
+        }
+        else {
+            //red
+            color = RED;
+        }
+        
+        switch(color) {
+            case OFF:
+              printf("\nCdS: %d OFF", analog(CDS_CELL));
+            break;
+            case BLUE:
+              printf("\nCdS: %d BLUE", analog(CDS_CELL));
+            break;
+            case RED:
+              printf("\nCdS: %d RED", analog(CDS_CELL));
+            break;
+        }
+        
+        sleep(.05);
+    }
+}

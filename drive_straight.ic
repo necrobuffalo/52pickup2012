@@ -7,6 +7,8 @@
     Modified: 4/26/2012 - Added error checking based on lecture flowchart
 */
 
+#define OFFSET 20
+
 int drive_straight(int distance, int speed, float delay) {
     //Initialize variables
     int current_ticks = 0, avg_ticks;
@@ -14,10 +16,10 @@ int drive_straight(int distance, int speed, float delay) {
     int right_speed = speed, left_speed = speed;
     
     if (speed > 0) {
-        right_speed = speed - 15;
+        right_speed = speed - OFFSET;
     }
     else if (speed < 0) {
-        right_speed = speed + 15;
+        right_speed = speed + OFFSET;
     }
     
     //Set motors to desired speed.
@@ -34,26 +36,46 @@ int drive_straight(int distance, int speed, float delay) {
         
         //Correct for uneven motor speeds
         if ((LEFT_ENCODER < RIGHT_ENCODER) && (left_speed < speed)) {
-            left_speed += 2;
-            if (left_speed > speed)
+            //Up the left motor speed a bit.
+            if (left_speed > 0)
+              left_speed += 2;
+            else if (left_speed < 0)
+              left_speed -= 2;
+            
+            if (((left_speed > speed) && (speed > 0)) || ((left_speed < speed) && (speed < 0)))
               left_speed = speed;
             motor(LEFT_MOTOR, left_speed);
         }
         else if ((LEFT_ENCODER < RIGHT_ENCODER) && (left_speed >= speed)) {
-            right_speed -= 2;
-            if (right_speed > speed)
+            //Slow down the right side by a bit.
+            if (right_speed > 0)
+              right_speed -= 2;
+            else if (right_speed < 0)
+              right_speed += 2;
+            
+            if (((right_speed > speed) && (speed > 0)) || ((right_speed < speed) && (speed < 0)))
               right_speed = speed;
             motor(RIGHT_MOTOR, right_speed);
         }
         else if ((RIGHT_ENCODER < LEFT_ENCODER) && (right_speed < speed)) {
-            right_speed += 2;
-            if (right_speed > speed)
+            //Up right side by a bit.
+            if (right_speed > 0)
+              right_speed += 2;
+            else if (right_speed < 0)
+              right_speed -= 2;
+            
+            if (((right_speed > speed) && (speed > 0)) || ((right_speed < speed) && (speed < 0)))
               right_speed = speed;
             motor(RIGHT_MOTOR, right_speed);
         }
         else if ((RIGHT_ENCODER < LEFT_ENCODER) && (right_speed < speed)) {
-            left_speed -= 2;
-            if (left_speed > speed)
+            //Slow the left side.
+            if (left_speed > 0)
+              left_speed -= 2;
+            else if (left_speed < 0)
+              left_speed += 2;
+            
+            if (((left_speed > speed) && (speed > 0)) || ((left_speed < speed) && (speed < 0)))
               left_speed = speed;
             motor(LEFT_MOTOR, left_speed);
         }

@@ -1,0 +1,48 @@
+void right() {
+    motor(LEFT_MOTOR, HALF_FORWARD);
+    motor(RIGHT_MOTOR, HALF_REVERSE + 20);
+    sleep(.1);
+    alloff();
+}
+void left() {
+    motor(LEFT_MOTOR, HALF_REVERSE);
+    motor(RIGHT_MOTOR, HALF_FORWARD - 20);
+    sleep(.1);
+    alloff();
+}
+
+int gps_align(int angle, int precision) {
+    int finished = 0, last_heading = gps_heading + 5;
+    int direction = 1;
+    
+    sleep(1.0);
+    
+    while (!stop_button() && !finished) {
+        if (gps_get_data()) {
+            printf("/nH: %d", gps_heading);
+            
+            if ((gps_heading >= angle - precision) && (gps_heading <= angle + precision)) {
+                finished = 1;
+                direction = 0;
+            }
+            else if (gps_heading > angle && last_heading < gps_heading) {
+                //We're turning the wrong way.
+                direction *= -1;
+            }
+            else if (gps_heading < angle && last_heading > gps_heading) {
+                direction *= -1;
+            }
+            
+            switch(direction) {
+                case 1:
+                  right();
+                break;
+                case -1:
+                  left();
+                break;
+            }
+            
+            last_heading = gps_heading;
+        }
+    }
+}

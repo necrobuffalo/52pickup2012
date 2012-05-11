@@ -1,0 +1,12 @@
+#use encoders/fencdr2.icb
+#use encoders/fencdr6.icb
+
+#define LEFT_ENCODER     encoder2_counts    //Left motor encoder value
+#define RIGHT_ENCODER    encoder6_counts    //Right motor encoder value
+
+int main() {
+    while (!stop_button()) {
+        printf("\nL: %dR: %d", LEFT_ENCODER, RIGHT_ENCODER);
+        sleep(.01);
+    }
+}

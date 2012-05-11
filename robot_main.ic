@@ -19,37 +19,149 @@
 #use drive_straight.ic
 #use turn.ic
 #use line_follow.ic
+#use go_to.ic
+#use gps_align.ic
+#use gps_nudge.ic
 
 int main() {
+    int last_heading = 50;
+    int turn_direction = 100;
+    int color = 0;
+    
     //init
-    exp_servo_enable();
-    gps_initialize_knob();
-    gps_enable();
-    
-    /*
-    while(!stop_button()) {
-        if (gps_get_data()) {
-            printf("\nX: %d Y: %d H: %d", gps_x, gps_y, gps_heading);
-        }
-    }
-*/    
-
-    
+    //gps_initialize_knob();
+    //gps_enable();
     
     //Wait for CdS cell
-    while (analog(CDS_CELL) > 20 && !start_button()) {}
-    printf("Light went on.");
+    while ((analog(CDS_CELL) > 20) && !start_button()) {}
     
+    //forward towards light
+    motor(0,75);
+    motor(3,75);
+    sleep(1.0);
+    alloff();
+    sleep(.5);
+    //turn to light
+    motor(0,75);
+    motor(3,-75);
+    sleep(.65);
+    alloff();
+    sleep(.5);
+    //hit light
+    motor(0,75);
+    motor(3,75);
+    sleep(.35);
+    alloff();
+    sleep(.5);
+    //print light status
+    if (analog(CDS_CELL) > 20) {
+        //off
+        color = OFF;
+    }
+    else if (analog(CDS_CELL) > 7) {
+        //blue
+        color = BLUE;
+    }
+    else {
+        //red
+        color = RED;
+    }
+    switch(color) {
+        case OFF:
+          printf("\nCdS: %d OFF", analog(CDS_CELL));
+        break;
+        case BLUE:
+          printf("\nCdS: %d BLUE", analog(CDS_CELL));
+        break;
+        case RED:
+          printf("\nCdS: %d RED", analog(CDS_CELL));
+        break;
+    }
+    //align with dumpster
+    motor(0,75);
+    motor(3,75);
+    sleep(.15);
+    alloff();
+    sleep(.5);
+    //turn to dumpster
+    motor(0,75);
+    motor(3,-75);
+    sleep(.65);
+    alloff();
+    sleep(.5);
+    //touch dumpster
+    motor(0,75);
+    motor(3,75);
+    sleep(1.35);
+    alloff();
+    sleep(.5);
+    //back up to bin
+    motor(0,-75);
+    motor(3,-75);
+    sleep(1.5);
+    alloff();
+    sleep(.5);
+    //turn towards ramp
+    motor(0,75);
+    motor(3,-75);
+    sleep(.75);
+    alloff();
+    sleep(.5);
+    //forward to x = 0
+    motor(0,75);
+    motor(3,75);
+    sleep(.75);
+    alloff();
+    sleep(.5);
+    //turn towards ramp
+    motor(0,75);
+    motor(3,-75);
+    sleep(.75);//originally .75
+    alloff();
+    sleep(.5);
+    //back up into button
+    printf("Attempting to hit the button.");
+    while (!stop_button()) {
+        //forward
+        motor(0,-100);
+        motor(3,-100);
+        sleep(2.0);
+        alloff();
+        //back
+        motor(0,75);
+        motor(3,75);
+        sleep(1.0);
+        alloff();
+    }
+    
+    //Performance test 4
+    /*
     //up ramp to light
     drive_straight(150,100,STD_DELAY);
     //back up a bit
-    drive_straight(40,-100,STD_DELAY);
+    drive_straight(30,-100,STD_DELAY);
     //rotate towards crank
     turn(23,-100,STD_DELAY);
     //move to line
-    drive_straight(80,-100,STD_DELAY);
+    drive_straight(70,-100,STD_DELAY); //originally 80 without gps check
     //line follow
-    line_follow((long) 10000, -75, -75);
+    //line_follow((long) 10000, -75, -75);
+    //fix angle
+    while (gps_heading != 90) {
+        if (gps_get_data()) {
+            last_heading = gps_heading;
+            
+            if ((gps_heading > 90) && (last_heading > gps_heading)) {
+                turn_direction *= -1;
+                turn(1,turn_direction,STD_DELAY);
+            }
+            else if ((gps_heading > 90) && (last_heading < gps_heading)) {
+                turn(1,-turn_direction,STD_DELAY);
+            }
+        }
+    }
+    drive_straight(10,100,STD_DELAY);
+    
     //turn crank for x seconds
     motor(CRANK, 60);
     sleep(3.0);
@@ -60,10 +172,57 @@ int main() {
     turn(22,-100,STD_DELAY);
     drive_straight(100,100, STD_DELAY);
 
-
+*/
     
+    
+    /*
+    while(!stop_button()) {
+        printf("\nL: %d R: %d", LEFT_ENCODER, RIGHT_ENCODER);
+        sleep(.1);
+    }
+*/
+    
+    //TO ALIGN TO 0:
+    /*
+    printf("\nWaiting for gps data.");
+    sleep(3.0);
+    printf("\nReceived gps data (hopefully). Turning to 0.");
+    while (!stop_button()) {
+        if (gps_get_data()) {
+            printf("/nH: %d", gps_heading);
+            
+            if (gps_heading == 0) {
+                
+            }
+            else if (gps_heading > 0 && last_heading > gps_heading) {
+                turn_direction *= -1;
+                motor(LEFT_MOTOR, HALF_FORWARD);
+                motor(RIGHT_MOTOR, HALF_REVERSE + 20);
+                sleep(.1);
+                alloff();
+            }
+            else if (gps_heading > 0 && last_heading < gps_heading) {
+                motor(LEFT_MOTOR, HALF_REVERSE);
+                motor(RIGHT_MOTOR, HALF_FORWARD - 20);
+                sleep(.1);
+                alloff();
+            }
+            
+            last_heading = gps_heading;
+        }
+    }
+    printf("\nAchieved zero.");
+    
+    
+    while (!stop_button()) {
+        if (gps_get_data()) {
+            printf("\nx: %d y: %d h: %d", gps_x, gps_y, gps_heading);
+        }
+    }
+*/    
+
     //shutdown
-    gps_disable();
-    exp_servo_disable();
+    //gps_disable();
+    //exp_servo_disable();
     
 }

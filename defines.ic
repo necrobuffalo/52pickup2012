@@ -26,7 +26,11 @@
 #define CENTER_OPTO      18
 #define RIGHT_OPTO       20
 
-/* GPS LOCATIONS */
+#define OFF 0
+#define BLUE 1
+#define RED 2
+
+/* COLORS */
 
 /* MISC */
 #define STD_DELAY        .1                 //Standard delay between encoder checks

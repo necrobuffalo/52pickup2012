@@ -19,7 +19,13 @@
 #define CRANK_X_MAX        0
 #define SUBWAY_X_MIN       0
 #define SUBWAY_X_MAX       0
+
 #define OUTSKIRTS_Y_MIN    0
 #define OUTSKIRTS_Y_MAX    0
 #define DOWNTOWN_Y_MIN     0
 #define DOWNTOWN_Y_MAX     0
+
+#define IN_OUTSKIRTS       (gps_x >= OUTSKIRTS_X_MIN) && (gps_x <= OUTSKIRTS_X_MAX) && (gps_y >= OUTSKIRTS_Y_MIN) && (gps_y <= OUTSKIRTS_Y_MAX)
+#define IN_STOPLIGHT       (gps_x >= STOPLIGHT_X_MIN) && (gps_x <= STOPLIGHT_X_MAX) && (gps_y >= DOWNTOWN_Y_MIN) && (gps_y <= DOWNTOWN_Y_MAX)
+#define IN_CRANK           (gps_x >= CRANK_X_MIN) && (gps_x <= CRANK_X_MAX) && (gps_y >= DOWNTOWN_Y_MIN) && (gps_y <= DOWNTOWN_Y_MAX)
+#define IN_SUBWAY          (gps_x >= SUBWAY_X_MIN) && (gps_x <= SUBWAY_X_MAX) && (gps_y >= DOWNTOWN_Y_MIN) && (gps_y <= DOWNTOWN_Y_MAX)

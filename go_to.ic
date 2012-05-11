@@ -1,0 +1,74 @@
+int go_to(int dest) {
+    int c_region, x_to_go, y_to_go;
+    
+    if (IN_OUTSKIRTS) {
+        c_region = GPS_OUTSKIRTS;
+    }
+    else if (IN_STOPLIGHT) {
+        c_region = GPS_STOPLIGHT;
+    }
+    else if (IN_CRANK) {
+        c_region = GPS_CRANK;
+    }
+    else if (IN_SUBWAY) {
+        c_region = GPS_SUBWAY;
+    }
+    
+    if (dest == GPS_OUTSKIRTS) {
+        switch (c_region) {
+            case GPS_OUTSKIRTS:
+              //do nothing
+              break;
+            case GPS_STOPLIGHT:
+              //x then y
+              break;
+            case GPS_CRANK:
+              //y, x, y
+              break;
+            case GPS_SUBWAY:
+              //
+              break;
+        }
+    }
+    else if (dest == GPS_STOPLIGHT) {
+        switch (c_region) {
+            case GPS_STOPLIGHT:
+              //do nothing
+              break;
+            case GPS_OUTSKIRTS:
+              break;
+            case GPS_CRANK:
+              break;
+            case GPS_SUBWAY:
+              break;
+        }
+    }
+    else if (dest == GPS_CRANK) {
+        switch (c_region) {
+            case GPS_CRANK:
+              //do nothing
+              break;
+            case GPS_STOPLIGHT:
+              break;
+            case GPS_OUTSKIRTS:
+              break;
+            case GPS_SUBWAY:
+              break;
+        }
+    }
+    else if (dest == GPS_SUBWAY) {
+        switch (c_region) {
+            case GPS_SUBWAY:
+              //do nothing
+              break;
+            case GPS_STOPLIGHT:
+              break;
+            case GPS_CRANK:
+              break;
+            case GPS_OUTSKIRTS:
+              break;
+        }
+    }
+    
+    return 0;
+}
